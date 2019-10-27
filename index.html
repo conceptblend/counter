@@ -1,18 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Counter</title>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
 
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
-<link rel="stylesheet" type="text/css" href="./main.css" />
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Character and word counter</title>
+  <meta name="description" content="It counts the number of characters and words in your input!">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+  <link rel="stylesheet" type="text/css" href="main.css" />
 </head>
 
 <body>
-  <textarea id="content-input" rows="5"></textarea>
-  
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
 
+  <div contenteditable="true" id="content-input" aria-placeholder="Type or paste your text here..."></div>
+  <br />
+  <label for="charactercount">Characters:</label>
+  <strong id="charactercount"></strong>
+  <span id="hiddencharactercount" class="text-light"></span>
+
+  <br />
+  <label for="wordcount">Words:</label>
+  <strong id="wordcount"></strong>
+
+  <script>
+    var isLogging = false;
+
+    function log(str) {
+      isLogging && console.log(str);
+    }
+
+    function updateUI() {
+      var text = inputElement.innerText;
+
+      if (text === null) return;
+
+      var chars = countCharactersWithSettings(text);
+      var hiddenChars = countHiddenCharacters(text);
+      var words = countWordsWithSettings(text);
+
+      characterCountElement.innerText = chars;
+      hiddenCharacterCountElement.innerText = hiddenChars > 0 ? " (plus " + hiddenChars + " invisible characters = " + (
+        chars + hiddenChars) + ")" : "";
+      wordCountElement.innerText = words;
+
+      log(chars + ", " + words);
+
+    }
+
+    var inputElement,
+      characterCountElement,
+      wordCountElement,
+      hiddenCharacterCountElement;
+
+    window.addEventListener('load', function () {
+      inputElement = document.getElementById('content-input');
+      characterCountElement = document.getElementById('charactercount');
+      wordCountElement = document.getElementById('wordcount');
+      hiddenCharacterCountElement = document.getElementById('hiddencharactercount');
+
+      inputElement && inputElement.addEventListener('keyup', updateUI);
+
+      updateUI();
+    })
+  </script>
+  <script src="utils.js"></script>
 </body>
+
 </html>
